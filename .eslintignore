@@ -1,0 +1,11 @@
+dist/
+node_modules/
+*.css
+*.scss
+*.less
+*.config.js
+*.config.ts
+.env*
+*.log
+coverage/
+public/
