@@ -2,6 +2,8 @@
 
 A modern React-based portfolio rebalancing calculator that helps investors maintain their desired asset allocation. Built with React, Tailwind CSS, and Vite for optimal performance and developer experience.
 
+NOTE: This project was entirely bootstrapped and developed with AI tooling to test their capabilities and understand modern AI workflow.
+
 ## Features
 
 ### Basic Mode

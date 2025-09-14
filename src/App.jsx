@@ -5,7 +5,6 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import ModeToggle from './components/ModeToggle';
 import { PortfolioSummary } from './components/PortfolioSummary';
-import { PlanningControls } from './components/PlanningControls';
 import PortfolioForm from './components/PortfolioForm';
 import Results from './components/Results';
 import { MonthlyStrategy } from './components/MonthlyStrategy';
@@ -23,7 +22,6 @@ function App() {
                 <Hero />
                 <ModeToggle />
                 <PortfolioSummary />
-                <PlanningControls />
                 <PortfolioForm />
                 <Results />
                 <MonthlyStrategy />

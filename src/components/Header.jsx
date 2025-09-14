@@ -16,29 +16,16 @@ const Header = () => {
           <div className="flex items-center gap-3">
             <ThemeToggle />
             
-            <div className="flex gap-2">
-              <button
-                onClick={() => switchLanguage('en')}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
-                  currentLanguage === 'en'
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
-                }`}
-                aria-label="Switch to English"
+            <div>
+              <select
+                value={currentLanguage}
+                onChange={e => switchLanguage(e.target.value)}
+                className="px-4 py-2 rounded-lg font-medium transition-colors duration-200 bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-400 appearance-none"
+                aria-label="Select language"
               >
-                EN
-              </button>
-              <button
-                onClick={() => switchLanguage('de')}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
-                  currentLanguage === 'de'
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
-                }`}
-                aria-label="Switch to German"
-              >
-                DE
-              </button>
+                <option value="en">English</option>
+                <option value="de">Deutsch</option>
+              </select>
             </div>
           </div>
         </div>

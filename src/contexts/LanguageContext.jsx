@@ -1,25 +1,40 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect } from 'react';
+
 import i18n from 'i18next';
 import enTranslations from '../locales/en.json';
 import deTranslations from '../locales/de.json';
 
-// Initialize i18next
-i18n.init({
-  lng: 'en', // default language
-  fallbackLng: 'en',
-  interpolation: {
-    escapeValue: false, // React already escapes values
-  },
-  resources: {
-    en: {
-      translation: enTranslations,
+// Determine initial language from localStorage or browser
+let initialLanguage = 'en';
+if (typeof window !== 'undefined') {
+  const savedLang = localStorage.getItem('portfolioBalancerLanguage');
+  const browserLang = navigator.language.split('-')[0];
+  if (savedLang && (savedLang === 'en' || savedLang === 'de')) {
+    initialLanguage = savedLang;
+  } else if (browserLang === 'de') {
+    initialLanguage = 'de';
+  }
+}
+
+// Prevent double initialization of i18n
+if (!i18n.isInitialized) {
+  i18n.init({
+    lng: initialLanguage, // use detected language
+    fallbackLng: 'en',
+    interpolation: {
+      escapeValue: false, // React already escapes values
     },
-    de: {
-      translation: deTranslations,
+    resources: {
+      en: {
+        translation: enTranslations,
+      },
+      de: {
+        translation: deTranslations,
+      },
     },
-  },
-});
+  });
+}
 
 const LanguageContext = createContext();
 
@@ -33,19 +48,7 @@ export const useLanguage = () => {
 
 export const LanguageProvider = ({ children }) => {
   // Initialize with saved language or browser preference
-  const [currentLanguage, setCurrentLanguage] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const savedLang = localStorage.getItem('portfolioBalancerLanguage');
-      const browserLang = navigator.language.split('-')[0];
-      
-      if (savedLang && (savedLang === 'en' || savedLang === 'de')) {
-        return savedLang;
-      } else if (browserLang === 'de') {
-        return 'de';
-      }
-    }
-    return 'en';
-  });
+  const [currentLanguage, setCurrentLanguage] = useState(initialLanguage);
 
   useEffect(() => {
     // Update i18next and save preferences when language changes
@@ -59,8 +62,12 @@ export const LanguageProvider = ({ children }) => {
   };
 
   const switchLanguage = (lang) => {
-    if (lang === 'en' || lang === 'de') {
-      setCurrentLanguage(lang);
+    if ((lang === 'en' || lang === 'de') && lang !== currentLanguage) {
+      i18n.changeLanguage(lang, () => {
+        setCurrentLanguage(lang);
+        document.documentElement.lang = lang;
+        localStorage.setItem('portfolioBalancerLanguage', lang);
+      });
     }
   };
 

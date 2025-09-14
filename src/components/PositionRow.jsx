@@ -2,10 +2,15 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useLanguage } from '../contexts/LanguageContext';
 import { usePortfolio } from '../contexts/PortfolioContext';
+import { useMemo } from 'react';
 
 const PositionRow = ({ position }) => {
   const { t, currentLanguage } = useLanguage();
   const { removePosition, updatePosition, getTotalValue, positions } = usePortfolio();
+
+  // Calculate if target sum is over 100%
+  const targetSum = useMemo(() => positions.reduce((sum, pos) => sum + (parseFloat(pos.targetRatio) || 0), 0), [positions]);
+  const showTargetError = targetSum > 100 && position.targetRatio > 0;
 
   const totalValue = getTotalValue();
   const currentPercentage = totalValue > 0 ? (position.currentValue / totalValue) * 100 : 0;
@@ -18,7 +23,17 @@ const PositionRow = ({ position }) => {
   };
 
   const handleChange = (field, value) => {
-    updatePosition(position.id, field, value);
+    // Allow empty string in input, but set to 0 in state if empty
+    if (field === 'currentValue' || field === 'targetRatio') {
+      // Accept '0' as valid, and only set to 0 if truly empty
+      if (value === '') {
+        updatePosition(position.id, field, 0);
+      } else if (/^-?\d*\.?\d*$/.test(value)) {
+        updatePosition(position.id, field, value);
+      }
+    } else {
+      updatePosition(position.id, field, value);
+    }
   };
 
   return (
@@ -28,15 +43,15 @@ const PositionRow = ({ position }) => {
         type="button"
         onClick={handleRemove}
         disabled={!canRemove}
-        className={`absolute top-2 right-2 w-8 h-8 p-0 rounded-full flex items-center justify-center z-10 ${
-          canRemove 
-            ? 'btn btn-danger btn-small hover:bg-red-600' 
-            : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
-        }`}
+        className={`absolute top-1.5 right-1.5 w-6 h-6 p-0 rounded-full flex items-center justify-center z-10 border border-gray-300 dark:border-gray-600 shadow-sm text-xs
+          ${canRemove
+            ? 'bg-red-500 text-white hover:bg-red-600 focus:ring-2 focus:ring-red-400'
+            : 'bg-gray-300 dark:bg-gray-600 text-gray-400 cursor-not-allowed'}
+        `}
         aria-label={t('remove')}
         title={canRemove ? t('remove') : 'Cannot remove the last position'}
       >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
@@ -60,14 +75,12 @@ const PositionRow = ({ position }) => {
           {t('currentValue')}
         </label>
         <input
-          type="number"
-          value={position.currentValue === 0 ? '0' : position.currentValue || ''}
+          type="text"
+          value={position.currentValue === 0 && position.currentValue !== '' ? '0' : position.currentValue}
           onChange={(e) => handleChange('currentValue', e.target.value)}
-          step="0.01"
-          min="0"
-          placeholder={currentLanguage === 'de' ? '0,00' : '0.00'}
+          inputMode="decimal"
+          placeholder={currentLanguage === 'de' ? '0' : '0'}
           className="form-input w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
-          required
         />
       </div>
 
@@ -85,16 +98,17 @@ const PositionRow = ({ position }) => {
           {t('targetRatio')}
         </label>
         <input
-          type="number"
-          value={position.targetRatio === 0 ? '0' : position.targetRatio || ''}
+          type="text"
+          value={position.targetRatio === 0 && position.targetRatio !== '' ? '0' : position.targetRatio}
           onChange={(e) => handleChange('targetRatio', e.target.value)}
-          step="0.1"
-          min="0"
-          max="100"
+          inputMode="decimal"
           placeholder="0.0"
-          className="form-input w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
-          required
+          className={`form-input w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 ${showTargetError ? 'border-red-500 ring-2 ring-red-300' : ''}`}
+          aria-invalid={showTargetError ? 'true' : undefined}
         />
+        {showTargetError && (
+          <div className="text-xs text-red-600 mt-1">Targets adding up higher than 100%</div>
+        )}
       </div>
       
       <div className="col-span-6 md:col-span-2 space-y-2">

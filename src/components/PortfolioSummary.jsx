@@ -20,7 +20,7 @@ export const PortfolioSummary = () => {
             {t('totalValue')}
           </div>
           <div className="text-2xl font-bold text-gray-900 dark:text-blue-100">
-            €{totalValue.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {totalValue.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
         </div>
         

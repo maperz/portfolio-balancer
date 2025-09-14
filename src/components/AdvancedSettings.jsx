@@ -6,9 +6,9 @@ const AdvancedSettings = () => {
   const { t, currentLanguage } = useLanguage();
   const { 
     monthlySavings, 
-    rebalanceFrequency, 
+    planningPeriod,
     setMonthlySavings, 
-    setRebalanceFrequency, 
+    setPlanningPeriod,
   } = usePortfolio();
 
   return (
@@ -16,9 +16,15 @@ const AdvancedSettings = () => {
       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
         {t('savingsSettings')}
       </h3>
+      <div className="mb-2 text-sm text-gray-600 dark:text-gray-400">
+        <span className="inline-block mr-2" title="Savings Mode lets you plan how much to save and for how many months. The app will optimize the allocation.">
+          <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="10" strokeWidth="2"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 16v-4m0-4h.01" /></svg>
+        </span>
+        Enter your planned monthly savings and the number of months you want to save for.
+      </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-2">
+      <div className="flex flex-col md:flex-row gap-6 w-full">
+        <div className="flex-1 space-y-2">
           <label htmlFor="monthly-savings" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             {t('monthlySavings')}
           </label>
@@ -29,25 +35,29 @@ const AdvancedSettings = () => {
             onChange={(e) => setMonthlySavings(parseFloat(e.target.value) || 0)}
             step="0.01"
             min="0"
-            placeholder={currentLanguage === 'de' ? '0,00' : '0.00'}
-            className="form-input bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+            placeholder={currentLanguage === 'de' ? '0' : '0'}
+            className="form-input w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
           />
         </div>
-        
-        <div className="space-y-2">
-          <label htmlFor="rebalance-frequency" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            {t('rebalanceFrequency')}
+        <div className="flex-1 space-y-2">
+          <label htmlFor="planning-period" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            {t('months')}
           </label>
-          <select
-            id="rebalance-frequency"
-            value={rebalanceFrequency}
-            onChange={(e) => setRebalanceFrequency(e.target.value)}
-            className="form-select bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
-          >
-            <option value="monthly">{t('monthly')}</option>
-            <option value="quarterly">{t('quarterly')}</option>
-            <option value="yearly">{t('yearly')}</option>
-          </select>
+          <input
+            type="text"
+            id="planning-period"
+            value={planningPeriod === 0 ? '' : planningPeriod}
+            onChange={e => {
+              const val = e.target.value;
+              if (val === '' || /^\d+$/.test(val)) setPlanningPeriod(val === '' ? 0 : Number(val));
+            }}
+            onBlur={e => {
+              if (e.target.value === '') setPlanningPeriod(0);
+            }}
+            min="0"
+            className="form-input w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+            placeholder="0"
+          />
         </div>
       </div>
     </div>
