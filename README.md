@@ -264,10 +264,6 @@ This is an open-source project. Contributions are welcome!
 - Tax-loss harvesting features
 - Integration with brokerage APIs
 
-## License
-
-This project is open source and available under the [MIT License](LICENSE).
-
 ## Disclaimer
 
 This tool is for educational and planning purposes only. It does not constitute financial advice. Always consult with a qualified financial advisor before making investment decisions.
@@ -277,7 +273,3 @@ This tool is for educational and planning purposes only. It does not constitute 
 - Open an issue on GitHub for bug reports
 - Submit feature requests via GitHub issues
 - Check existing issues before creating new ones
-
----
-
-**Live Demo**: [https://yourusername.github.io/portfolio-balancer](https://yourusername.github.io/portfolio-balancer)
