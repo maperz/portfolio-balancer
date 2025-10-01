@@ -62,7 +62,7 @@ const ThemeToggle = () => {
       aria-label={`Current theme: ${getThemeLabel(theme)}. ${getThemeTooltip(theme)}`}
     >
       {getThemeIcon(theme)}
-      <span className="text-sm font-medium">{getThemeLabel(theme)}</span>
+      <span className="text-sm font-medium hidden sm:inline">{getThemeLabel(theme)}</span>
     </button>
   );
 };
