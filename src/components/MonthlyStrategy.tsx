@@ -46,7 +46,7 @@ export const MonthlyStrategy = () => {
               <div className="text-sm text-gray-600 dark:text-gray-400">
                 {t('portfolioValue')}: {monthData.portfolioValue.toLocaleString('de-DE', {
                   minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
+                  maximumFractionDigits: 2,
                 })}
               </div>
             </div>
@@ -65,7 +65,7 @@ export const MonthlyStrategy = () => {
                     <span title={action.type === 'buy' ? 'Amount invested this month' : 'Amount rebalanced'}>
                       {t(action.type)} {action.amount.toLocaleString('de-DE', {
                         minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
+                        maximumFractionDigits: 2,
                       })}
                     </span>
                   </div>

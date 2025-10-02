@@ -8,7 +8,8 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
   "ignorePatterns": [
     "dist",
@@ -16,6 +17,7 @@
     "node_modules",
     "*.css"
   ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module",
@@ -29,7 +31,8 @@
     }
   },
   "plugins": [
-    "react-refresh"
+    "react-refresh",
+    "@typescript-eslint"
   ],
   "rules": {
     "react/jsx-no-target-blank": "off",
@@ -41,7 +44,8 @@
       }
     ],
     "react/prop-types": "off",
-    "no-unused-vars": [
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
       "error",
       {
         "vars": "all",
@@ -50,7 +54,7 @@
         "argsIgnorePattern": "^_"
       }
     ],
-    "no-console": "warn",
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
     "no-debugger": "error",
     "prefer-const": "error",
     "no-var": "error",

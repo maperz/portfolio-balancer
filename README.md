@@ -1,6 +1,6 @@
 # Portfolio Balancer
 
-A modern React-based portfolio rebalancing calculator that helps investors maintain their desired asset allocation. Built with React, Tailwind CSS, and Vite for optimal performance and developer experience.
+A modern React-based portfolio rebalancing calculator that helps investors maintain their desired asset allocation. Built with React, TypeScript, Tailwind CSS, and Vite for optimal performance and developer experience.
 
 NOTE: This project was entirely bootstrapped and developed with AI tooling to test their capabilities and understand modern AI workflow.
 
@@ -25,6 +25,7 @@ NOTE: This project was entirely bootstrapped and developed with AI tooling to te
 
 ### Modern Tech Stack
 - ⚛️ React 18 with hooks and context
+- 📘 TypeScript for type safety
 - 🎨 Tailwind CSS for styling
 - ⚡ Vite for fast development and building
 - 📱 Fully responsive design
@@ -82,26 +83,27 @@ Then visit `http://localhost:3000` in your browser.
 portfolio-balancer/
 ├── src/
 │   ├── components/         # React components
-│   │   ├── Header.jsx
-│   │   ├── Hero.jsx
-│   │   ├── ModeToggle.jsx
-│   │   ├── PortfolioForm.jsx
-│   │   ├── PositionRow.jsx
-│   │   ├── AdvancedSettings.jsx
-│   │   ├── Results.jsx
-│   │   └── Footer.jsx
+│   │   ├── Header.tsx
+│   │   ├── Hero.tsx
+│   │   ├── ModeToggle.tsx
+│   │   ├── PortfolioForm.tsx
+│   │   ├── PositionRow.tsx
+│   │   ├── AdvancedSettings.tsx
+│   │   ├── Results.tsx
+│   │   └── Footer.tsx
 │   ├── contexts/          # React contexts
-│   │   ├── LanguageContext.jsx
-│   │   └── PortfolioContext.jsx
+│   │   ├── LanguageContext.tsx
+│   │   └── PortfolioContext.tsx
 │   ├── locales/           # Translation files
 │   │   ├── en.json
 │   │   └── de.json
-│   ├── App.jsx            # Main App component
-│   ├── main.jsx           # React entry point
+│   ├── App.tsx            # Main App component
+│   ├── main.tsx           # React entry point
 │   └── index.css          # Tailwind CSS styles
 ├── .github/workflows/     # GitHub Actions
 ├── package.json
-├── vite.config.js
+├── vite.config.ts
+├── tsconfig.json
 ├── tailwind.config.js
 └── README.md
 ```

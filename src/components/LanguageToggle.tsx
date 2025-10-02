@@ -1,9 +1,11 @@
 import { useLanguage } from '../contexts/LanguageContext';
 
+type Language = 'en' | 'de';
+
 const LanguageToggle = () => {
   const { currentLanguage, switchLanguage } = useLanguage();
 
-  const getLanguageIcon = (lang) => {
+  const getLanguageIcon = (lang: Language) => {
     switch (lang) {
     case 'en':
       return (
@@ -22,7 +24,7 @@ const LanguageToggle = () => {
     }
   };
 
-  const getLanguageLabel = (lang) => {
+  const getLanguageLabel = (lang: Language) => {
     switch (lang) {
     case 'en':
       return 'English';
@@ -34,7 +36,7 @@ const LanguageToggle = () => {
   };
 
   const toggleLanguage = () => {
-    const newLang = currentLanguage === 'en' ? 'de' : 'en';
+    const newLang: Language = currentLanguage === 'en' ? 'de' : 'en';
     switchLanguage(newLang);
   };
 

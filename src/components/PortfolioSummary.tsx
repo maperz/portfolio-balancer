@@ -6,7 +6,7 @@ export const PortfolioSummary = () => {
   const { t } = useLanguage();
 
   const totalValue = getTotalValue();
-  const totalTargetRatio = positions.reduce((sum, pos) => sum + (pos.targetRatio || 0), 0);
+  const totalTargetRatio = positions.reduce((sum, pos) => sum + (Number(pos.targetRatio) || 0), 0);
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
