@@ -236,8 +236,77 @@ npm run build
 # Preview production build locally
 npm run preview
 
-# Lint code (if ESLint is configured)
+# Lint code
 npm run lint
+
+# Run tests
+npm run test
+
+# Run tests in watch mode
+npm run test
+
+# Run tests once (CI mode)
+npm run test:run
+
+# Run tests with UI
+npm run test:ui
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+## Testing
+
+This project uses [Vitest](https://vitest.dev/) and [React Testing Library](https://testing-library.com/react) for testing.
+
+### Running Tests
+
+```bash
+# Run tests in watch mode (interactive)
+npm run test
+
+# Run tests once (for CI/CD)
+npm run test:run
+
+# Run tests with UI interface
+npm run test:ui
+
+# Generate coverage report
+npm run test:coverage
+```
+
+### Test Structure
+
+Tests are located in the `src/test/` directory:
+
+- `PortfolioContext.test.jsx` - Tests for portfolio business logic
+- `App.test.jsx` - Integration tests for the main App component
+- `calculations.test.js` - Unit tests for calculation utilities
+
+### Writing Tests
+
+Tests use Vitest and React Testing Library. Example:
+
+```javascript
+import { describe, it, expect } from 'vitest';
+import { renderHook, act } from '@testing-library/react';
+import { PortfolioProvider, usePortfolio } from '../contexts/PortfolioContext';
+
+describe('Portfolio Feature', () => {
+  it('should calculate correctly', () => {
+    const { result } = renderHook(() => usePortfolio(), {
+      wrapper: PortfolioProvider,
+    });
+    
+    act(() => {
+      result.current.calculateRebalancing();
+    });
+    
+    expect(result.current.results).toBeDefined();
+  });
+});
+```
+
 ```
 
 ## Browser Support
