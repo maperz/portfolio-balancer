@@ -1,10 +1,10 @@
 # Portfolio Balancer
 
+> **🤖 AI-Powered Educational Project:** This project was **fully created using AI tools** as an educational experiment to explore AI-assisted development workflows and capabilities. Every aspect—from initial bootstrapping to implementation—was developed with AI tooling.
+
 A free, open-source web application that helps investors maintain their desired asset allocation through smart rebalancing calculations. Whether you're a DIY investor or financial advisor, Portfolio Balancer makes it easy to keep your portfolio on track.
 
 🌐 **[Try it now](https://maperz.github.io/portfolio-balancer/)** - No signup required!
-
-> **Note:** This project was entirely bootstrapped and developed with AI tooling to test their capabilities and understand modern AI workflow.
 
 ## What is Portfolio Balancer?
 
@@ -349,10 +349,10 @@ This project is open source and available under the MIT License. Feel free to us
 
 ## Acknowledgments
 
-Built with modern web technologies and powered by AI-assisted development tools.
+This project was fully created with AI-assisted development tools as an educational exploration of modern AI workflows.
 
 ---
 
-**Made with ❤️ for the investing community**
+**Made with ❤️ and 🤖 for the investing community**
 
 Try it now: **[maperz.github.io/portfolio-balancer](https://maperz.github.io/portfolio-balancer/)**
