@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { usePortfolio } from '../contexts/PortfolioContext';
+import type { Action } from '../contexts/PortfolioContext';
 
 const Results = () => {
   const { t, formatCurrency } = useLanguage();
@@ -20,17 +21,17 @@ const Results = () => {
     return null;
   }
 
-  if (results.error) {
+  if ('error' in results) {
     return (
       <div id="results-section" className="card p-6 fade-in">
         <div className="alert alert-warning">
-          {t(results.error)}
+          {t(results.error as string)}
         </div>
       </div>
     );
   }
 
-  const getActionText = (action) => {
+  const getActionText = (action: Action) => {
     if (action.type === 'hold') {
       return <span className="text-gray-500">{t('hold')}</span>;
     } else if (action.type === 'buy') {
@@ -47,13 +48,6 @@ const Results = () => {
       );
     }
     return '';
-  };
-
-  const getDifferenceColor = (difference) => {
-    if (Math.abs(difference) < 0.01) {
-      return 'text-gray-500';
-    }
-    return difference > 0 ? 'text-success-600' : 'text-error-600';
   };
 
   return (
@@ -84,11 +78,6 @@ const Results = () => {
         {results.targetTotal !== results.totalCurrentValue && (
           <div className="mt-2 text-sm text-gray-600">
             {t('withSavings')}: {formatCurrency(results.targetTotal)}
-          </div>
-        )}
-        {results.monthsUntilRebalance > 0 && (
-          <div className="mt-1 text-sm text-gray-600">
-            {t('monthsUntilRebalance')}: {results.monthsUntilRebalance}
           </div>
         )}
       </div>
@@ -131,20 +120,20 @@ const Results = () => {
                     <td className="font-medium">
                       {displayName}
                     </td>
-                    <td>{result.currentValue}</td>
-                    <td>{result.targetRatio.toFixed(1)}%</td>
-                    <td>{result.targetValue}</td>
+                    <td>{Number(result.currentValue)}</td>
+                    <td>{Number(result.targetRatio).toFixed(1)}%</td>
+                    <td>{Number(result.targetValue)}</td>
                     {isAdvancedMode && (
                       <td className="text-blue-700 dark:text-blue-300">
-                        {result.fromSavings}
+                        {Number(result.fromSavings)}
                       </td>
                     )}
                     {isAdvancedMode && (
                       <td className="text-purple-700 dark:text-purple-300">
-                        {result.fromRebalancing}
+                        {Number(result.fromRebalancing)}
                       </td>
                     )}
-                    <td>{getActionText(result.action, isUnspent)}</td>
+                    <td>{getActionText(result.action)}</td>
                   </tr>
                 );
               })}

@@ -1,19 +1,28 @@
-
-/* eslint-disable react-refresh/only-export-components */
 import { useLanguage } from '../contexts/LanguageContext';
 import { usePortfolio } from '../contexts/PortfolioContext';
 import { useMemo } from 'react';
 
-const PositionRow = ({ position }) => {
+interface Position {
+  id: number | string;
+  name: string;
+  currentValue: number | string;
+  targetRatio: number | string;
+}
+
+interface PositionRowProps {
+  position: Position;
+}
+
+const PositionRow = ({ position }: PositionRowProps) => {
   const { t, currentLanguage } = useLanguage();
   const { removePosition, updatePosition, getTotalValue, positions } = usePortfolio();
 
   // Calculate if target sum is over 100%
-  const targetSum = useMemo(() => positions.reduce((sum, pos) => sum + (parseFloat(pos.targetRatio) || 0), 0), [positions]);
-  const showTargetError = targetSum > 100 && position.targetRatio > 0;
+  const targetSum = useMemo(() => positions.reduce((sum, pos) => sum + (parseFloat(String(pos.targetRatio)) || 0), 0), [positions]);
+  const showTargetError = targetSum > 100 && Number(position.targetRatio) > 0;
 
   const totalValue = getTotalValue();
-  const currentPercentage = totalValue > 0 ? (position.currentValue / totalValue) * 100 : 0;
+  const currentPercentage = totalValue > 0 ? (Number(position.currentValue) / totalValue) * 100 : 0;
   const canRemove = positions.length > 1;
 
   const handleRemove = () => {
@@ -22,7 +31,7 @@ const PositionRow = ({ position }) => {
     }
   };
 
-  const handleChange = (field, value) => {
+  const handleChange = (field: string, value: string) => {
     // Allow empty string in input, but set to 0 in state if empty
     if (field === 'currentValue' || field === 'targetRatio') {
       // Accept '0' as valid, and only set to 0 if truly empty
@@ -45,8 +54,8 @@ const PositionRow = ({ position }) => {
         disabled={!canRemove}
         className={`absolute top-1.5 right-1.5 w-6 h-6 p-0 rounded-full flex items-center justify-center z-10 border border-gray-300 dark:border-gray-600 shadow-sm text-xs
           ${canRemove
-            ? 'bg-red-500 text-white hover:bg-red-600 focus:ring-2 focus:ring-red-400'
-            : 'bg-gray-300 dark:bg-gray-600 text-gray-400 cursor-not-allowed'}
+      ? 'bg-red-500 text-white hover:bg-red-600 focus:ring-2 focus:ring-red-400'
+      : 'bg-gray-300 dark:bg-gray-600 text-gray-400 cursor-not-allowed'}
         `}
         aria-label={t('remove')}
         title={canRemove ? t('remove') : 'Cannot remove the last position'}
@@ -76,7 +85,7 @@ const PositionRow = ({ position }) => {
         </label>
         <input
           type="text"
-          value={position.currentValue === 0 && position.currentValue !== '' ? '0' : position.currentValue}
+          value={Number(position.currentValue) === 0 && position.currentValue !== '' ? '0' : position.currentValue}
           onChange={(e) => handleChange('currentValue', e.target.value)}
           inputMode="decimal"
           placeholder={currentLanguage === 'de' ? '0' : '0'}
@@ -99,7 +108,7 @@ const PositionRow = ({ position }) => {
         </label>
         <input
           type="text"
-          value={position.targetRatio === 0 && position.targetRatio !== '' ? '0' : position.targetRatio}
+          value={Number(position.targetRatio) === 0 && position.targetRatio !== '' ? '0' : position.targetRatio}
           onChange={(e) => handleChange('targetRatio', e.target.value)}
           inputMode="decimal"
           placeholder="0.0"
@@ -116,13 +125,13 @@ const PositionRow = ({ position }) => {
           {t('difference')}
         </label>
         <div className={`form-input w-full flex items-center justify-center font-medium border ${
-          Math.abs(currentPercentage - position.targetRatio) < 0.1 
+          Math.abs(currentPercentage - Number(position.targetRatio)) < 0.1 
             ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800' 
-            : currentPercentage < position.targetRatio 
+            : currentPercentage < Number(position.targetRatio) 
               ? 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border-red-200 dark:border-red-800' 
               : 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300 border-yellow-200 dark:border-yellow-800'
         }`}>
-          {(currentPercentage - position.targetRatio).toFixed(1)}%
+          {(currentPercentage - Number(position.targetRatio)).toFixed(1)}%
         </div>
       </div>
     </div>

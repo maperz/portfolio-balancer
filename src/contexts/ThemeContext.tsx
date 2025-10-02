@@ -1,7 +1,18 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-const ThemeContext = createContext();
+type Theme = 'light' | 'dark' | 'system';
+type EffectiveTheme = 'light' | 'dark';
+
+interface ThemeContextValue {
+  theme: Theme;
+  effectiveTheme: EffectiveTheme;
+  setThemePreference: (theme: Theme) => void;
+  toggleTheme: () => void;
+  isSystemTheme: boolean;
+}
+
+const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export const useTheme = () => {
   const context = useContext(ThemeContext);
@@ -11,19 +22,23 @@ export const useTheme = () => {
   return context;
 };
 
-export const ThemeProvider = ({ children }) => {
+interface ThemeProviderProps {
+  children: ReactNode;
+}
+
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   // Initialize with saved theme preference or default to system
-  const [theme, setTheme] = useState(() => {
+  const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('portfolioBalancerTheme');
       if (savedTheme && ['light', 'dark', 'system'].includes(savedTheme)) {
-        return savedTheme;
+        return savedTheme as Theme;
       }
     }
     return 'system';
   });
   
-  const [effectiveTheme, setEffectiveTheme] = useState(() => {
+  const [effectiveTheme, setEffectiveTheme] = useState<EffectiveTheme>(() => {
     // Initialize effective theme immediately
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('portfolioBalancerTheme');
@@ -37,7 +52,7 @@ export const ThemeProvider = ({ children }) => {
   });
 
   // Function to get system preference
-  const getSystemTheme = () => {
+  const getSystemTheme = (): EffectiveTheme => {
     if (typeof window !== 'undefined') {
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
@@ -45,7 +60,7 @@ export const ThemeProvider = ({ children }) => {
   };
 
   // Function to apply theme to document
-  const applyTheme = (themeToApply) => {
+  const applyTheme = (themeToApply: EffectiveTheme) => {
     if (typeof document !== 'undefined') {
       const root = document.documentElement;
       if (themeToApply === 'dark') {
@@ -59,11 +74,12 @@ export const ThemeProvider = ({ children }) => {
   // Apply initial theme immediately on mount
   useEffect(() => {
     applyTheme(effectiveTheme);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Update effective theme and apply it when theme preference changes
   useEffect(() => {
-    let newEffectiveTheme;
+    let newEffectiveTheme: EffectiveTheme;
     
     if (theme === 'system') {
       newEffectiveTheme = getSystemTheme();
@@ -80,7 +96,9 @@ export const ThemeProvider = ({ children }) => {
 
   // Listen for system theme changes
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined') {
+      return;
+    }
     
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     
@@ -98,20 +116,20 @@ export const ThemeProvider = ({ children }) => {
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, [theme]);
 
-  const setThemePreference = (newTheme) => {
+  const setThemePreference = (newTheme: Theme) => {
     if (['light', 'dark', 'system'].includes(newTheme)) {
       setTheme(newTheme);
     }
   };
 
   const toggleTheme = () => {
-    const themes = ['light', 'dark', 'system'];
+    const themes: Theme[] = ['light', 'dark', 'system'];
     const currentIndex = themes.indexOf(theme);
     const nextIndex = (currentIndex + 1) % themes.length;
     setThemePreference(themes[nextIndex]);
   };
 
-  const value = {
+  const value: ThemeContextValue = {
     theme, // user preference: 'light', 'dark', 'system'
     effectiveTheme, // actual applied theme: 'light' or 'dark'
     setThemePreference,

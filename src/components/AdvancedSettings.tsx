@@ -49,10 +49,14 @@ const AdvancedSettings = () => {
             value={planningPeriod === 0 ? '' : planningPeriod}
             onChange={e => {
               const val = e.target.value;
-              if (val === '' || /^\d+$/.test(val)) setPlanningPeriod(val === '' ? 0 : Number(val));
+              if (val === '' || /^\d+$/.test(val)) {
+                setPlanningPeriod(val === '' ? 0 : Number(val));
+              }
             }}
             onBlur={e => {
-              if (e.target.value === '') setPlanningPeriod(0);
+              if (e.target.value === '') {
+                setPlanningPeriod(0);
+              }
             }}
             min="0"
             className="form-input w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"

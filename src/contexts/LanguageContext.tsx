@@ -1,17 +1,25 @@
-/* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 import i18n from 'i18next';
 import enTranslations from '../locales/en.json';
 import deTranslations from '../locales/de.json';
 
+type Language = 'en' | 'de';
+
+interface LanguageContextValue {
+  currentLanguage: Language;
+  t: (key: string, options?: Record<string, unknown>) => string;
+  switchLanguage: (lang: Language) => void;
+  formatCurrency: (amount: number, showSign?: boolean) => string;
+}
+
 // Determine initial language from localStorage or browser
-let initialLanguage = 'en';
+let initialLanguage: Language = 'en';
 if (typeof window !== 'undefined') {
   const savedLang = localStorage.getItem('portfolioBalancerLanguage');
   const browserLang = navigator.language.split('-')[0];
   if (savedLang && (savedLang === 'en' || savedLang === 'de')) {
-    initialLanguage = savedLang;
+    initialLanguage = savedLang as Language;
   } else if (browserLang === 'de') {
     initialLanguage = 'de';
   }
@@ -36,7 +44,7 @@ if (!i18n.isInitialized) {
   });
 }
 
-const LanguageContext = createContext();
+const LanguageContext = createContext<LanguageContextValue | undefined>(undefined);
 
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
@@ -46,9 +54,13 @@ export const useLanguage = () => {
   return context;
 };
 
-export const LanguageProvider = ({ children }) => {
+interface LanguageProviderProps {
+  children: ReactNode;
+}
+
+export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   // Initialize with saved language or browser preference
-  const [currentLanguage, setCurrentLanguage] = useState(initialLanguage);
+  const [currentLanguage, setCurrentLanguage] = useState<Language>(initialLanguage);
 
   useEffect(() => {
     // Update i18next and save preferences when language changes
@@ -57,11 +69,11 @@ export const LanguageProvider = ({ children }) => {
     localStorage.setItem('portfolioBalancerLanguage', currentLanguage);
   }, [currentLanguage]);
 
-  const t = (key, options = {}) => {
+  const t = (key: string, options: Record<string, unknown> = {}) => {
     return i18n.t(key, options);
   };
 
-  const switchLanguage = (lang) => {
+  const switchLanguage = (lang: Language) => {
     if ((lang === 'en' || lang === 'de') && lang !== currentLanguage) {
       i18n.changeLanguage(lang, () => {
         setCurrentLanguage(lang);
@@ -71,7 +83,7 @@ export const LanguageProvider = ({ children }) => {
     }
   };
 
-  const formatCurrency = (amount, showSign = false) => {
+  const formatCurrency = (amount: number, showSign = false) => {
     const formatter = new Intl.NumberFormat(currentLanguage === 'de' ? 'de-DE' : 'en-US', {
       style: 'currency',
       currency: 'EUR',
@@ -86,7 +98,7 @@ export const LanguageProvider = ({ children }) => {
     return formatter.format(amount);
   };
 
-  const value = {
+  const value: LanguageContextValue = {
     currentLanguage,
     t,
     switchLanguage,

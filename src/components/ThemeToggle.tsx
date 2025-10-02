@@ -1,9 +1,11 @@
 import { useTheme } from '../contexts/ThemeContext';
 
+type Theme = 'light' | 'dark' | 'system';
+
 const ThemeToggle = () => {
   const { theme, toggleTheme, effectiveTheme } = useTheme();
 
-  const getThemeIcon = (currentTheme) => {
+  const getThemeIcon = (currentTheme: Theme) => {
     switch (currentTheme) {
     case 'light':
       return (
@@ -28,7 +30,7 @@ const ThemeToggle = () => {
     }
   };
 
-  const getThemeLabel = (currentTheme) => {
+  const getThemeLabel = (currentTheme: Theme) => {
     switch (currentTheme) {
     case 'light':
       return 'Light';
@@ -41,7 +43,7 @@ const ThemeToggle = () => {
     }
   };
 
-  const getThemeTooltip = (currentTheme) => {
+  const getThemeTooltip = (currentTheme: Theme) => {
     switch (currentTheme) {
     case 'light':
       return 'Switch to dark mode';

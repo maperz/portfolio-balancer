@@ -1,7 +1,72 @@
-/* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-const PortfolioContext = createContext();
+interface Position {
+  id: number | string;
+  name: string;
+  currentValue: number | string;
+  targetRatio: number | string;
+}
+
+export interface Action {
+  type: 'buy' | 'sell' | 'hold';
+  amount: number;
+}
+
+interface MonthAction {
+  position: string;
+  type: 'buy';
+  amount: number;
+}
+
+export interface MonthlyStrategyItem {
+  month: number;
+  portfolioValue: number;
+  actions: MonthAction[];
+}
+
+export interface CalculatedResult extends Position {
+  targetValue: number;
+  difference: number;
+  fromSavings: number;
+  fromRebalancing: number;
+  currentRatio: number;
+  action: Action;
+}
+
+export interface Results {
+  results: CalculatedResult[];
+  totalCurrentValue: number;
+  targetTotal: number;
+  totalMonths: number;
+  hasUnspent: boolean;
+  monthlyStrategy: MonthlyStrategyItem[];
+}
+
+export interface ErrorResult {
+  error: string;
+}
+
+type RebalanceFrequency = 'monthly' | 'quarterly' | 'yearly';
+
+interface PortfolioContextValue {
+  positions: Position[];
+  isAdvancedMode: boolean;
+  monthlySavings: number;
+  rebalanceFrequency: RebalanceFrequency;
+  planningPeriod: number;
+  results: Results | null;
+  getTotalValue: () => number;
+  setIsAdvancedMode: (value: boolean) => void;
+  setMonthlySavings: (value: number) => void;
+  setRebalanceFrequency: (value: RebalanceFrequency) => void;
+  setPlanningPeriod: (value: number) => void;
+  addPosition: (position?: Position | null) => void;
+  removePosition: (id: number | string) => void;
+  updatePosition: (id: number | string, field: string, value: string | number) => void;
+  calculateRebalancing: () => Results | ErrorResult;
+}
+
+const PortfolioContext = createContext<PortfolioContextValue | undefined>(undefined);
 
 export const usePortfolio = () => {
   const context = useContext(PortfolioContext);
@@ -11,9 +76,13 @@ export const usePortfolio = () => {
   return context;
 };
 
-export const PortfolioProvider = ({ children }) => {
+interface PortfolioProviderProps {
+  children: ReactNode;
+}
+
+export const PortfolioProvider = ({ children }: PortfolioProviderProps) => {
   // Load positions from localStorage or use defaults
-  const getInitialPositions = () => {
+  const getInitialPositions = (): Position[] => {
     try {
       const savedPositions = localStorage.getItem('portfolioBalancerPositions');
       if (savedPositions) {
@@ -49,20 +118,20 @@ export const PortfolioProvider = ({ children }) => {
     return {
       isAdvancedMode: false,
       monthlySavings: 0,
-      rebalanceFrequency: 'monthly',
+      rebalanceFrequency: 'monthly' as RebalanceFrequency,
       planningPeriod: 12,
-      periodUnit: 'months'
+      periodUnit: 'months',
     };
   };
 
   const initialSettings = getInitialSettings();
   
-  const [positions, setPositions] = useState(getInitialPositions());
-  const [isAdvancedMode, setIsAdvancedMode] = useState(initialSettings.isAdvancedMode);
-  const [monthlySavings, setMonthlySavings] = useState(initialSettings.monthlySavings);
-  const [rebalanceFrequency, setRebalanceFrequency] = useState(initialSettings.rebalanceFrequency);
-  const [planningPeriod, setPlanningPeriod] = useState(initialSettings.planningPeriod);
-  const [results, setResults] = useState(null);
+  const [positions, setPositions] = useState<Position[]>(getInitialPositions());
+  const [isAdvancedMode, setIsAdvancedMode] = useState<boolean>(initialSettings.isAdvancedMode);
+  const [monthlySavings, setMonthlySavings] = useState<number>(initialSettings.monthlySavings);
+  const [rebalanceFrequency, setRebalanceFrequency] = useState<RebalanceFrequency>(initialSettings.rebalanceFrequency);
+  const [planningPeriod, setPlanningPeriod] = useState<number>(initialSettings.planningPeriod);
+  const [results, setResults] = useState<Results | null>(null);
 
   // Clear results when switching between advanced and simple mode
   useEffect(() => {
@@ -70,7 +139,7 @@ export const PortfolioProvider = ({ children }) => {
   }, [isAdvancedMode]);
 
   const getTotalValue = () => {
-    return positions.reduce((sum, pos) => sum + (pos.currentValue || 0), 0);
+    return positions.reduce((sum, pos) => sum + (Number(pos.currentValue) || 0), 0);
   };
 
   // Save positions to localStorage whenever they change
@@ -89,7 +158,7 @@ export const PortfolioProvider = ({ children }) => {
         isAdvancedMode,
         monthlySavings,
         rebalanceFrequency,
-        planningPeriod
+        planningPeriod,
       };
       localStorage.setItem('portfolioBalancerSettings', JSON.stringify(settings));
     } catch (error) {
@@ -97,12 +166,12 @@ export const PortfolioProvider = ({ children }) => {
     }
   }, [isAdvancedMode, monthlySavings, rebalanceFrequency, planningPeriod]);
 
-  const addPosition = (position = null) => {
+  const addPosition = (position: Position | null = null) => {
     // Calculate remaining target percentage
-    const currentTotalRatio = positions.reduce((sum, pos) => sum + (pos.targetRatio || 0), 0);
+    const currentTotalRatio = positions.reduce((sum, pos) => sum + (Number(pos.targetRatio) || 0), 0);
     const remainingRatio = Math.max(0, 100 - currentTotalRatio);
     
-    const newPosition = position || {
+    const newPosition: Position = position || {
       id: Date.now() + Math.random(), // Ensure unique ID
       name: '',
       currentValue: 0,
@@ -116,28 +185,28 @@ export const PortfolioProvider = ({ children }) => {
     setPositions(prev => [...prev, newPosition]);
   };
 
-  const removePosition = (id) => {
+  const removePosition = (id: number | string) => {
     setPositions(prev => prev.filter(pos => pos.id !== id));
   };
 
-  const updatePosition = (id, field, value) => {
+  const updatePosition = (id: number | string, field: string, value: string | number) => {
     setPositions(prev => 
       prev.map(pos => 
         pos.id === id 
           ? { 
-              ...pos, 
-              [field]: field === 'name' 
-                ? value 
-                : value === '' 
-                  ? 0 
-                  : parseFloat(value) || 0
-            }
+            ...pos, 
+            [field]: field === 'name' 
+              ? value 
+              : value === '' 
+                ? 0 
+                : parseFloat(String(value)) || 0,
+          }
           : pos,
       ),
     );
   };
 
-  const getAction = (difference) => {
+  const getAction = (difference: number): Action => {
     if (Math.abs(difference) < 0.01) {
       return { type: 'hold', amount: 0 };
     } else if (difference > 0) {
@@ -148,34 +217,36 @@ export const PortfolioProvider = ({ children }) => {
   };
 
   // New strategy: minimize number of position transitions (one position per month gets the full saving)
-  const calculateOptimizedStrategy = (totalMonths, monthlyAmount) => {
-    const strategy = [];
-    let currentPositions = [...positions];
+  const calculateOptimizedStrategy = (totalMonths: number, monthlyAmount: number): MonthlyStrategyItem[] => {
+    const strategy: MonthlyStrategyItem[] = [];
+    const currentPositions = [...positions];
     const totalCurrentValue = getTotalValue();
     const totalSavings = monthlyAmount * totalMonths;
     const finalTotal = totalCurrentValue + totalSavings;
     // Calculate the final target value for each position
     const finalTargets = positions.map(pos => ({
       ...pos,
-      finalTargetValue: (pos.targetRatio / 100) * finalTotal,
+      finalTargetValue: (Number(pos.targetRatio) / 100) * finalTotal,
     }));
 
     // Calculate the total amount needed for each position to reach its final target
-    let neededAmounts = finalTargets.map((pos, i) => ({
+    const neededAmounts = finalTargets.map((pos, i) => ({
       id: pos.id,
       name: pos.name,
-      needed: pos.finalTargetValue - (currentPositions[i]?.currentValue || 0),
+      needed: pos.finalTargetValue - (Number(currentPositions[i]?.currentValue) || 0),
     }));
 
     for (let month = 1; month <= totalMonths; month++) {
-      const monthActions = [];
+      const monthActions: MonthAction[] = [];
       let remainingThisMonth = monthlyAmount;
       // Always pick the position with the largest remaining need
       while (remainingThisMonth > 0.01) {
         // Find the position with the largest remaining need
         const idx = neededAmounts.reduce((maxIdx, n, i, arr) => (n.needed > arr[maxIdx].needed ? i : maxIdx), 0);
         const n = neededAmounts[idx];
-        if (n.needed <= 0.01) break;
+        if (n.needed <= 0.01) {
+          break;
+        }
         const toInvest = Math.min(n.needed, remainingThisMonth);
         if (toInvest > 0.01) {
           monthActions.push({
@@ -186,7 +257,8 @@ export const PortfolioProvider = ({ children }) => {
           // Update currentPositions
           const posIndex = currentPositions.findIndex(p => p.id === n.id);
           if (posIndex !== -1) {
-            currentPositions[posIndex].currentValue += toInvest;
+            const currentVal = Number(currentPositions[posIndex].currentValue) || 0;
+            currentPositions[posIndex].currentValue = currentVal + toInvest;
           }
           // Update remaining needed
           neededAmounts[idx].needed -= toInvest;
@@ -197,19 +269,19 @@ export const PortfolioProvider = ({ children }) => {
       }
       strategy.push({
         month,
-        portfolioValue: currentPositions.reduce((sum, pos) => sum + pos.currentValue, 0),
+        portfolioValue: currentPositions.reduce((sum, pos) => sum + (Number(pos.currentValue) || 0), 0),
         actions: monthActions,
       });
     }
     return strategy;
   };
 
-  const calculateRebalancing = () => {
+  const calculateRebalancing = (): Results | ErrorResult => {
     // Validate positions - allow zero values but require valid names and non-negative numbers
     const validPositions = positions.filter(pos => 
       pos.name.trim() && 
-      (pos.currentValue >= 0 || pos.currentValue === '') && 
-      (pos.targetRatio >= 0 || pos.targetRatio === '')
+      (Number(pos.currentValue) >= 0 || pos.currentValue === '') && 
+      (Number(pos.targetRatio) >= 0 || pos.targetRatio === ''),
     );
 
     if (validPositions.length === 0) {
@@ -218,7 +290,7 @@ export const PortfolioProvider = ({ children }) => {
 
     // Calculate total current value
     const totalCurrentValue = getTotalValue();
-  const totalMonths = planningPeriod;
+    const totalMonths = planningPeriod;
     
     // Calculate target total (current + savings if advanced mode)
     let targetTotal = totalCurrentValue;
@@ -227,8 +299,8 @@ export const PortfolioProvider = ({ children }) => {
     }
 
     // Check if ratios add up to 100%
-    const totalRatio = validPositions.reduce((sum, pos) => sum + pos.targetRatio, 0);
-    const adjustedPositions = [...validPositions];
+    const totalRatio = validPositions.reduce((sum, pos) => sum + Number(pos.targetRatio), 0);
+    const adjustedPositions: Position[] = [...validPositions];
     
     const hasUnspent = Math.abs(totalRatio - 100) > 0.01;
     if (hasUnspent) {
@@ -244,26 +316,27 @@ export const PortfolioProvider = ({ children }) => {
     // Calculate target values and differences, and split difference into rebalancing and new income
 
     // Calculate optimized monthly strategy if in advanced mode
-    let monthlyStrategy = [];
-    let savingsByPosition = {};
+    let monthlyStrategy: MonthlyStrategyItem[] = [];
+    const savingsByPosition: Record<string, number> = {};
     if (isAdvancedMode && monthlySavings > 0 && planningPeriod > 0) {
       monthlyStrategy = calculateOptimizedStrategy(totalMonths, monthlySavings);
 
-      savingsByPosition = {};
       monthlyStrategy.forEach(month => {
         month.actions.forEach(action => {
           if (action.type === 'buy') {
-            if (!savingsByPosition[action.position]) savingsByPosition[action.position] = 0;
+            if (!savingsByPosition[action.position]) {
+              savingsByPosition[action.position] = 0;
+            }
             savingsByPosition[action.position] += action.amount;
           }
         });
       });
     }
 
-    const calculatedResults = adjustedPositions.map(position => {
-      const targetValue = (position.targetRatio / 100) * targetTotal;
-      const difference = targetValue - position.currentValue;
-      const currentRatio = totalCurrentValue > 0 ? (position.currentValue / totalCurrentValue) * 100 : 0;
+    const calculatedResults: CalculatedResult[] = adjustedPositions.map(position => {
+      const targetValue = (Number(position.targetRatio) / 100) * targetTotal;
+      const difference = targetValue - Number(position.currentValue);
+      const currentRatio = totalCurrentValue > 0 ? (Number(position.currentValue) / totalCurrentValue) * 100 : 0;
       // Portion of targetValue that comes from new income (savings) - actual from monthly strategy
       const fromSavings = isAdvancedMode && monthlySavings > 0
         ? (savingsByPosition[position.name] || 0)
@@ -282,7 +355,7 @@ export const PortfolioProvider = ({ children }) => {
     });
 
 
-    const result = {
+    const result: Results = {
       results: calculatedResults,
       totalCurrentValue,
       targetTotal,
@@ -295,7 +368,7 @@ export const PortfolioProvider = ({ children }) => {
     return result;
   };
 
-  const value = {
+  const value: PortfolioContextValue = {
     positions,
     isAdvancedMode,
     monthlySavings,
