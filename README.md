@@ -1,57 +1,77 @@
 # Portfolio Balancer
 
-A modern React-based portfolio rebalancing calculator that helps investors maintain their desired asset allocation. Built with React, Tailwind CSS, and Vite for optimal performance and developer experience.
+> **🤖 AI-Powered Educational Project:** This project was **fully created using AI tools** as an educational experiment to explore AI-assisted development workflows and capabilities. Every aspect—from initial bootstrapping to implementation—was developed with AI tooling.
 
-NOTE: This project was entirely bootstrapped and developed with AI tooling to test their capabilities and understand modern AI workflow.
+A free, open-source web application that helps investors maintain their desired asset allocation through smart rebalancing calculations. Whether you're a DIY investor or financial advisor, Portfolio Balancer makes it easy to keep your portfolio on track.
 
-## Features
+🌐 **[Try it now](https://maperz.github.io/portfolio-balancer/)** - No signup required!
+
+## What is Portfolio Balancer?
+
+Portfolio Balancer is a powerful yet simple tool that answers the question: *"How should I rebalance my investment portfolio?"*
+
+Instead of manually calculating which assets to buy or sell to maintain your target allocation, Portfolio Balancer does it for you instantly. Just enter your current positions and target percentages, and get clear, actionable recommendations.
+
+### Key Benefits
+
+- 💰 **Free & Private** - Runs entirely in your browser, no data leaves your device
+- 🎯 **Accurate** - Calculates exact buy/sell amounts to match your target allocation
+- 📊 **Smart Savings** - Advanced mode optimizes how monthly contributions should be allocated
+- 🌍 **Multilingual** - Available in English and German
+- 🌓 **Dark Mode** - Easy on the eyes, day or night
+- 📱 **Mobile-Friendly** - Works on any device
+
+## Screenshots
 
 ### Basic Mode
-- Add multiple investment positions (stocks, bonds, commodities, cash, etc.)
-- Set target allocation percentages for each position
-- Calculate rebalancing recommendations (buy/sell/hold)
-- Automatic handling of allocations that don't sum to 100% (creates "Unspent" position)
+Simple portfolio rebalancing with instant recommendations:
+
+![Basic Mode](.github/images/screenshot-basic-mode.png)
+
+### Advanced Mode with Monthly Savings
+Plan your savings strategy over time with month-by-month allocation:
+
+![Advanced Mode](.github/images/screenshot-advanced-results.png)
+
+### Dark Mode Support
+Comfortable viewing in any lighting condition:
+
+![Dark Mode](.github/images/screenshot-dark-mode.png)
+
+## How It Works
+
+### Basic Mode
+
+1. **Add Your Positions** - Enter each investment (stocks, bonds, ETFs, etc.) with its current value
+2. **Set Target Allocation** - Define what percentage each position should represent
+3. **Get Recommendations** - See exactly how much to buy or sell for each position
+
+**Example:**
+- You have €70,000 in stocks, €10,000 in gold, and €20,000 in cash
+- Your target is 70% stocks, 10% gold, 20% cash
+- Portfolio is already balanced → Hold everything ✅
 
 ### Advanced Mode
-- Monthly savings integration
-- Configurable rebalancing frequency (monthly, quarterly, yearly)
-- Future portfolio value calculations including regular contributions
 
-### Internationalization
-- Available in English and German
-- Automatic language detection based on browser settings
-- Manual language switching
-- Separate JSON translation files for easy maintenance
+Everything from Basic Mode, plus:
 
-### Modern Tech Stack
-- ⚛️ React 18 with hooks and context
-- 🎨 Tailwind CSS for styling
-- ⚡ Vite for fast development and building
-- 📱 Fully responsive design
-- ♿ WCAG compliant accessibility
-- 🌐 Static site deployment ready
+1. **Add Monthly Savings** - Enter how much you plan to invest each month
+2. **Set Time Horizon** - Choose your planning period (e.g., 12 months)
+3. **Get Monthly Strategy** - See exactly where to invest each month's savings
+
+The app optimizes your monthly contributions to gradually rebalance your portfolio over time, minimizing the need to sell existing positions.
 
 ## Quick Start
 
-### Development
-```bash
-# Install dependencies
-npm install
+### Using the Live App
 
-# Start development server
-npm run dev
+Just visit **[maperz.github.io/portfolio-balancer](https://maperz.github.io/portfolio-balancer/)** - no installation needed!
 
-# Build for production
-npm run build
+### Running Locally
 
-# Preview production build
-npm run preview
-```
-
-### Local Development
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/portfolio-balancer.git
+git clone https://github.com/maperz/portfolio-balancer.git
 cd portfolio-balancer
 
 # Install dependencies
@@ -61,22 +81,74 @@ npm install
 npm run dev
 ```
 
-Then visit `http://localhost:3000` in your browser.
+Then open `http://localhost:3000` in your browser.
 
-## GitHub Pages Deployment
+## Features
 
-### Automatic Deployment with GitHub Actions
+### Core Capabilities
+
+- ✅ **Portfolio Analysis** - See current allocation vs. target at a glance
+- ✅ **Smart Rebalancing** - Get specific buy/sell recommendations
+- ✅ **Savings Optimizer** - Plan how to invest monthly contributions
+- ✅ **Multi-Currency** - Automatic formatting based on language preference
+- ✅ **Export Ready** - Copy results for your records
+
+### User Experience
+
+- 🎨 **Clean Interface** - Intuitive design built with Tailwind CSS
+- 🌓 **Theme Support** - Light, Dark, and Auto modes
+- 🌍 **Internationalization** - English and German (easily extensible)
+- 📱 **Responsive Design** - Works seamlessly on desktop, tablet, and mobile
+- ⚡ **Instant Calculations** - No loading times, everything happens in your browser
+
+## Use Cases
+
+### For Individual Investors
+
+- **Portfolio Maintenance** - Regular rebalancing to stay on target
+- **Savings Planning** - Optimize where to invest monthly contributions
+- **What-If Analysis** - See the impact of different allocation strategies
+- **Tax Planning** - Identify positions that need selling (consider tax implications separately)
+
+### For Financial Advisors
+
+- **Client Education** - Visual tool to explain rebalancing concepts
+- **Quick Calculations** - Fast scenario analysis during client meetings
+- **Transparent Recommendations** - Show clients exactly why you recommend certain trades
+
+## Deployment
+
+### Deploy Your Own Instance
+
+#### Option 1: GitHub Pages (Automatic)
 1. Fork this repository
 2. Go to Settings → Pages
 3. Select "GitHub Actions" as the source
 4. Push to main branch - the site will automatically build and deploy
 5. Your site will be available at `https://yourusername.github.io/portfolio-balancer`
 
-### Manual Deployment
-1. Build the project: `npm run build`
-2. Deploy the `dist` folder to your hosting provider
+#### Option 2: Any Static Host
+```bash
+# Build for production
+npm run build
 
-## Project Structure
+# Deploy the `dist` folder to:
+# - Netlify, Vercel, Cloudflare Pages
+# - AWS S3, Azure Static Web Apps
+# - Or any other static hosting service
+```
+
+## For Developers
+
+### Tech Stack
+
+- **Frontend Framework:** React 18 with Hooks and Context API
+- **Styling:** Tailwind CSS with custom design system
+- **Build Tool:** Vite for fast development and optimized builds
+- **Internationalization:** Custom i18n system with JSON translation files
+- **State Management:** React Context (no external state library needed)
+
+### Project Structure
 
 ```
 portfolio-balancer/
@@ -92,61 +164,26 @@ portfolio-balancer/
 │   │   └── Footer.jsx
 │   ├── contexts/          # React contexts
 │   │   ├── LanguageContext.jsx
-│   │   └── PortfolioContext.jsx
+│   │   ├── PortfolioContext.jsx
+│   │   └── ThemeContext.jsx
 │   ├── locales/           # Translation files
 │   │   ├── en.json
 │   │   └── de.json
 │   ├── App.jsx            # Main App component
 │   ├── main.jsx           # React entry point
 │   └── index.css          # Tailwind CSS styles
-├── .github/workflows/     # GitHub Actions
+├── .github/
+│   ├── workflows/         # CI/CD pipelines
+│   └── images/            # Screenshots for README
 ├── package.json
 ├── vite.config.js
 ├── tailwind.config.js
 └── README.md
 ```
 
-## Usage Examples
+### How the Algorithm Works
 
-### Basic Portfolio Rebalancing
-1. **Add Positions**: Enter your current investments
-   - MSCI World ETF: €70,000 (target: 70%)
-   - Gold ETF: €10,000 (target: 10%)
-   - Cash: €20,000 (target: 20%)
-
-2. **Calculate**: The app will show:
-   - Current allocation percentages
-   - Target values for perfect balance
-   - Specific buy/sell recommendations
-
-### Advanced Mode with Savings
-1. **Enable Advanced Mode**
-2. **Set Monthly Savings**: €1,000
-3. **Choose Frequency**: Quarterly rebalancing
-4. **Calculate**: See how regular contributions can help rebalance over time
-
-## File Structure
-
-```
-portfolio-balancer/
-├── index.html          # Main HTML structure
-├── styles.css          # CSS styling and responsive design
-├── script.js           # Core application logic
-├── translations.js     # Internationalization support
-└── README.md           # This file
-```
-
-## Technical Details
-
-### Architecture
-- **React 18**: Modern React with hooks and context API
-- **Tailwind CSS**: Utility-first CSS framework with custom design system
-- **Vite**: Fast build tool and development server
-- **Context API**: State management for portfolio data and internationalization
-- **JSON Translations**: Separate translation files for maintainability
-
-### Core Algorithm
-The rebalancing calculation works as follows:
+The rebalancing calculation follows these steps:
 
 1. **Calculate Total Portfolio Value**
    ```javascript
@@ -166,22 +203,30 @@ The rebalancing calculation works as follows:
 4. **Generate Actions**
    - Positive difference → Buy recommendation
    - Negative difference → Sell recommendation
-   - Near zero → Hold recommendation
+   - Near zero (< 0.01%) → Hold recommendation
 
-### State Management
-- **PortfolioContext**: Manages positions, calculations, and advanced settings
-- **LanguageContext**: Handles translations and currency formatting
+### Development Commands
 
-### Styling Architecture
-- **Tailwind CSS**: Base utility classes
-- **Custom Components**: Reusable button, form, and layout classes
-- **CSS Custom Properties**: Theme colors and design tokens
-- **Responsive Design**: Mobile-first approach with breakpoints
+```bash
+# Start development server with hot reload
+npm run dev
 
-## Customization
+# Build for production
+npm run build
+
+# Preview production build locally
+npm run preview
+
+# Lint code
+npm run lint
+
+# Fix linting issues automatically
+npm run lint:fix
+```
 
 ### Adding New Languages
-1. Create a new translation file in `src/locales/`:
+
+1. Create a translation file in `src/locales/`:
 ```json
 // src/locales/fr.json
 {
@@ -191,7 +236,7 @@ The rebalancing calculation works as follows:
 }
 ```
 
-2. Import and add to `LanguageContext.jsx`:
+2. Import and register in `LanguageContext.jsx`:
 ```javascript
 import frTranslations from '../locales/fr.json';
 
@@ -202,15 +247,16 @@ const translations = {
 };
 ```
 
-3. Add language button to `Header.jsx`
+3. Add language selector option in `Header.jsx`
 
-### Customizing Tailwind Theme
-Modify `tailwind.config.js` to customize colors, fonts, and spacing:
+### Customizing the Theme
+
+Modify `tailwind.config.js` to customize colors and styling:
 ```javascript
-theme: {
-  extend: {
-    colors: {
-      primary: {
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
         // Your custom color palette
       },
     },
@@ -218,60 +264,95 @@ theme: {
 }
 ```
 
-### Adding New Features
-1. Create new components in `src/components/`
-2. Add state management to contexts as needed
-3. Update translations in JSON files
-4. Add Tailwind classes for styling
+### Browser Compatibility
 
-## Development Scripts
-
-```bash
-# Development server with hot reload
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build locally
-npm run preview
-
-# Lint code (if ESLint is configured)
-npm run lint
-```
-
-## Browser Support
 - Chrome 88+
 - Firefox 88+
 - Safari 14+
 - Edge 88+
 
-Modern browsers with ES2020 support and CSS Grid/Flexbox.
+Modern browsers with ES2020 support and CSS Grid/Flexbox are required.
 
 ## Contributing
 
-This is an open-source project. Contributions are welcome!
+We welcome contributions! This is an open-source project built by the community.
 
-### Development Setup
-1. Clone the repository
-2. Make your changes
-3. Test thoroughly across different browsers
-4. Submit a pull request
+### How to Contribute
 
-### Areas for Contribution
-- Additional language translations
-- New rebalancing algorithms
-- Enhanced UI/UX features
-- Mobile app development
-- Tax-loss harvesting features
-- Integration with brokerage APIs
+1. **Fork the repository**
+2. **Create a feature branch** (`git checkout -b feature/amazing-feature`)
+3. **Make your changes** and test thoroughly
+4. **Commit your changes** (`git commit -m 'Add amazing feature'`)
+5. **Push to the branch** (`git push origin feature/amazing-feature`)
+6. **Open a Pull Request**
+
+### Areas Where We'd Love Help
+
+- 🌍 **Translations** - Add support for more languages
+- 🎨 **UI/UX Improvements** - Better designs, accessibility enhancements
+- 📊 **Features** - New rebalancing strategies, export formats
+- 🧪 **Testing** - Add test coverage
+- 📝 **Documentation** - Improve guides and examples
+- 🐛 **Bug Fixes** - Help squash bugs
+
+### Development Guidelines
+
+- Follow existing code style (use `npm run lint`)
+- Test across different browsers
+- Keep changes focused and atomic
+- Update documentation as needed
+
+## Frequently Asked Questions
+
+**Q: Is my data safe?**  
+A: Yes! All calculations happen in your browser. No data is sent to any server.
+
+**Q: Can I use this for tax-loss harvesting?**  
+A: The tool shows which positions to sell, but you'll need to consider tax implications separately.
+
+**Q: Does it support multiple currencies?**  
+A: Yes! Currency formatting adjusts based on your language selection.
+
+**Q: Can I save my portfolio?**  
+A: Currently, data is stored in your browser's local storage. Refresh-safe, but not synced across devices.
+
+## Roadmap
+
+Potential future enhancements:
+
+- [ ] Import/export portfolio data (CSV, JSON)
+- [ ] Save multiple portfolio scenarios
+- [ ] Tax-loss harvesting optimization
+- [ ] More rebalancing strategies (calendar, threshold-based)
+- [ ] Integration with brokerage APIs
+- [ ] Mobile app versions
 
 ## Disclaimer
 
-This tool is for educational and planning purposes only. It does not constitute financial advice. Always consult with a qualified financial advisor before making investment decisions.
+⚠️ **Important:** This tool is for educational and planning purposes only. It does not constitute financial advice. 
 
-## Support
+- Always consult with a qualified financial advisor before making investment decisions
+- Consider tax implications before selling assets
+- Past performance doesn't guarantee future results
+- The tool assumes assets maintain their current value (doesn't predict market movements)
 
-- Open an issue on GitHub for bug reports
-- Submit feature requests via GitHub issues
-- Check existing issues before creating new ones
+## License
+
+This project is open source and available under the MIT License. Feel free to use, modify, and distribute as needed.
+
+## Support & Feedback
+
+- 🐛 **Bug Reports:** [Open an issue](https://github.com/maperz/portfolio-balancer/issues)
+- 💡 **Feature Requests:** [Submit an idea](https://github.com/maperz/portfolio-balancer/issues)
+- 💬 **Questions:** Check existing issues or start a discussion
+- ⭐ **Like the project?** Give it a star on GitHub!
+
+## Acknowledgments
+
+This project was fully created with AI-assisted development tools as an educational exploration of modern AI workflows.
+
+---
+
+**Made with ❤️ and 🤖 for the investing community**
+
+Try it now: **[maperz.github.io/portfolio-balancer](https://maperz.github.io/portfolio-balancer/)**
