@@ -10,6 +10,7 @@
   "results": "Rebalancing Results",
   "footer": "Portfolio Balancer - Tool for Investment Management",
   "savingsSettings": "Savings Settings",
+  "plannedSavingsPlanPrompt": "Enter your planned monthly savings and the number of months you want to save for.",
   "monthlySavings": "Monthly Savings Amount",
   "rebalanceFrequency": "Rebalancing Frequency",
   "monthly": "Monthly",
