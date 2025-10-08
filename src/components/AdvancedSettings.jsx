@@ -20,7 +20,7 @@ const AdvancedSettings = () => {
         <span className="inline-block mr-2" title="Savings Mode lets you plan how much to save and for how many months. The app will optimize the allocation.">
           <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="10" strokeWidth="2"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 16v-4m0-4h.01" /></svg>
         </span>
-        Enter your planned monthly savings and the number of months you want to save for.
+        {t('plannedSavingsPlanPrompt')}
       </div>
       
       <div className="flex flex-col md:flex-row gap-6 w-full">

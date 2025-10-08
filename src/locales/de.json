@@ -10,6 +10,7 @@
   "results": "Rebalancing-Ergebnisse",
   "footer": "Portfolio Balancer - Tool für Investment-Management",
   "savingsSettings": "Spar-Einstellungen",
+  "plannedSavingsPlanPrompt": "Geben Sie Ihre geplanten monatlichen Ersparnisse und die Anzahl der Monate ein, für die Sie sparen wollen.",
   "monthlySavings": "Monatlicher Sparbetrag",
   "rebalanceFrequency": "Rebalancing-Häufigkeit",
   "monthly": "Monatlich",
